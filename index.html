@@ -400,7 +400,7 @@ body {
         
                 <div class="time-unit" id="days">
                     <div id="days-number">9</div>
-                    <div>years</div>
+                    <div>days</div>
                 </div>
                 <div class="time-unit" id="hours">
                     <div id="hours-number">23</div>
@@ -438,43 +438,49 @@ body {
 
     <button id="launchButton">Launch Game</button>
 
-    <script>const launchButton = document.getElementById('launchButton');
- const timerElement = document.getElementById('timer');
- const daysElement = document.getElementById('days-number');
- const hoursElement = document.getElementById('hours-number');
- const minutesElement = document.getElementById('minutes-number');
- const secondsElement = document.getElementById('seconds-number');
+    <script>
+        const launchButton = document.getElementById('launchButton');
+const timerElement = document.getElementById('timer');
+const daysElement = document.getElementById('days-number');
+const hoursElement = document.getElementById('hours-number');
+const minutesElement = document.getElementById('minutes-number');
+const secondsElement = document.getElementById('seconds-number');
 
- //Set countdown to 10 days from now
- let countdownDate = new Date().getTime() + 10 * 24 * 60 * 60 * 1000;  // 10 days in milliseconds
+// Set target release date: 19 April 2025 (in local time)
+const targetReleaseDate = new Date('2025-04-19T00:00:00').getTime();
 
- const countdownInterval = setInterval(function() {
-     let now = new Date().getTime();
-     let distance = countdownDate - now;
+// Optionally store it in localStorage for consistency
+if (!localStorage.getItem('releaseDate')) {
+    localStorage.setItem('releaseDate', targetReleaseDate.toString());
+}
 
-     if (distance <= 0) {
-         clearInterval(countdownInterval);
-         timerElement.textContent = "Game Launched!";
-         launchButton.textContent = "Game is now live!";
-         launchButton.disabled = true;  // Disable the launch button
-     } else {
-         // Calculate days, hours, minutes, and seconds remaining
-        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-        // Update the text content for each element
+const countdownInterval = setInterval(function () {
+    const now = new Date().getTime();
+    const countdownDate = parseInt(localStorage.getItem('releaseDate'));
+    const distance = countdownDate - now;
+
+    if (distance <= 0) {
+        clearInterval(countdownInterval);
+        timerElement.textContent = "Game Launched!";
+        launchButton.textContent = "Game is now live!";
+        launchButton.disabled = true;
+    } else {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
         daysElement.textContent = days;
-       hoursElement.textContent = hours;
-         minutesElement.textContent = minutes;
-         secondsElement.textContent = seconds;
-     }
- }, 1000);
+        hoursElement.textContent = hours;
+        minutesElement.textContent = minutes;
+        secondsElement.textContent = seconds;
+    }
+}, 1000);
 
- launchButton.addEventListener('click', () => {
-     window.location.href = "game.html";  // Redirect to the game page when clicked
+launchButton.addEventListener('click', () => {
+    window.location.href = "game.html";
 });
+
 </script>
 </body>
 </html>
