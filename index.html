@@ -439,47 +439,42 @@ body {
     <button id="launchButton">Launch Game</button>
 
     <script>
-        const launchButton = document.getElementById('launchButton');
+       const launchButton = document.getElementById('launchButton');
 const timerElement = document.getElementById('timer');
 const daysElement = document.getElementById('days-number');
 const hoursElement = document.getElementById('hours-number');
 const minutesElement = document.getElementById('minutes-number');
 const secondsElement = document.getElementById('seconds-number');
 
-// Set target release date: 19 April 2025 (in local time)
-const targetReleaseDate = new Date('2025-04-22T00:00:00').getTime();
+var countDownDate = new Date("Apr 28, 2025 15:37:28").getTime();
 
-// Optionally store it in localStorage for consistency
-if (!localStorage.getItem('releaseDate')) {
-    localStorage.setItem('releaseDate', targetReleaseDate.toString());
-}
+// Update the count down every 1 second
+const x = setInterval(function() {
 
-const countdownInterval = setInterval(function () {
-    const now = new Date().getTime();
-    const countdownDate = parseInt(localStorage.getItem('releaseDate'));
-    const distance = countdownDate - now;
-
-    if (distance <= 0) {
-        clearInterval(countdownInterval);
-        timerElement.textContent = "Game Launched!";
-        launchButton.textContent = "Game is now live!";
-        launchButton.disabled = true;
-    } else {
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        daysElement.textContent = days;
-        hoursElement.textContent = hours;
+  // Get today's date and time
+  const now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  const distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+ daysElement.textContent = days;
+         hoursElement.textContent = hours;
         minutesElement.textContent = minutes;
-        secondsElement.textContent = seconds;
-    }
+         secondsElement.textContent = seconds;
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
 }, 1000);
-
-launchButton.addEventListener('click', () => {
-    window.location.href = "game.html";
-});
 
 </script>
 </body>
